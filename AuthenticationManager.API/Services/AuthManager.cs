@@ -33,16 +33,18 @@ namespace AuthenticationManager.API.Services
 
         public async Task<(string accessToken, string refreshToken)> GetTokens(AccountForAuthenticationDto user)
         {
-             HttpClient client = _httpClientFactory.CreateClient();
+            HttpClient client = _httpClientFactory.CreateClient();
             PasswordTokenRequest tokenRequest = new()
             {
                 Address = "https://localhost:7130/connect/token",
                 ClientId = "APIClient",
-                Scope = "APIScope",
+                Scope = "APIScope offline_access",
                 UserName = user.UserName,
                 Password = user.Password
             };
             TokenResponse tokenResponse = await client.RequestPasswordTokenAsync(tokenRequest);
+
+
 
             return (tokenResponse.AccessToken, tokenResponse.RefreshToken);
         }
